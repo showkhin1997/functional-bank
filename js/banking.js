@@ -16,10 +16,17 @@ function updateTotalField(totalFieldId, amount) {
     totalElement.innerText = previousTotal + amount;
 }
 
-function updatebalance(amount, isAdd) {
+function getCurrentBalance() {
     const blanceTotal = document.getElementById('balance-total');
     const balanceTotalText = blanceTotal.innerText;
     const previousBalanceTotal = parseFloat(balanceTotalText);
+    return previousBalanceTotal;
+}
+
+
+function updatebalance(amount, isAdd) {
+    const blanceTotal = document.getElementById('balance-total');
+    const previousBalanceTotal = getCurrentBalance();
     if (isAdd == true) {
         blanceTotal.innerText = previousBalanceTotal + amount;
     }
@@ -64,10 +71,14 @@ document.getElementById('withdraw-button').addEventListener('click', function ()
     /* const withdrawInput = document.getElementById('withdraw-input');
     const withdrawAmounText = withdrawInput.value;
     const withdrawAmount = parseFloat(withdrawAmounText); */
+    const currentBalance = getCurrentBalance();
     const withdrawAmount = getInputValue('withdraw-input')
-    if (withdrawAmount > 0) {
+    if (withdrawAmount > 0 && withdrawAmount < currentBalance) {
         updateTotalField('withdraw-total', withdrawAmount);
         updatebalance(withdrawAmount, false)
+    }
+    if (withdrawAmount > currentBalance) {
+        console.log("You haven't enough Balance")
     }
 
     // update withdrawtotal
